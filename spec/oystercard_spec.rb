@@ -11,9 +11,6 @@ describe Oystercard do
   let(:exit_station) { double(:exit_station) }
   # let(:journey) {double(:my_journey, :start => "a", :end => "b")}
 
-  ADD_MONEY = 60
-  TEST_DEDUCT_MONEY = 2
-
   describe '#initalize' do
     it 'should check that the card has an empty list of journey by default' do
       expect(subject.log).to be_empty
@@ -26,18 +23,18 @@ describe Oystercard do
     end
 
     it 'can be loaded with money' do
-      expect { subject.add_money(ADD_MONEY) }.to change { subject.balance }.by ADD_MONEY
+      expect { subject.add_money(50) }.to change { subject.balance }.by 50
     end
 
     it "has a balance limit of #{Oystercard::BALANCE_LIMIT} Pounds" do
-      subject.add_money(ADD_MONEY)
-      expect { subject.add_money(ADD_MONEY) }.to raise_error "The balance limit is #{Oystercard::BALANCE_LIMIT} pounds"
+      subject.add_money(50)
+      expect { subject.add_money(50) }.to raise_error "The balance limit is #{Oystercard::BALANCE_LIMIT} pounds"
     end
   end
 
   describe '#touch in' do
     it 'can touch in when entering the tube' do
-      subject.add_money(ADD_MONEY)
+      subject.add_money(50)
       subject.touch_in(entry_station)
       expect(subject.in_journey?).to be true
     end
@@ -59,7 +56,7 @@ describe Oystercard do
 
     describe '#touch out' do
       before do
-        subject.add_money(ADD_MONEY)
+        subject.add_money(50)
         subject.touch_in(entry_station)
       end
 
@@ -86,7 +83,7 @@ describe Oystercard do
 
   describe 'stores information about travel' do
     before do
-      subject.add_money(ADD_MONEY)
+      subject.add_money(50)
       subject.touch_in(entry_station)
     end
 

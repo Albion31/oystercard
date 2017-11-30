@@ -33,6 +33,5 @@ describe Journey do
       subject.end(station)
       expect(subject.fare).to eq Journey::PENALTY_FARE
     end
-
   end
 end
