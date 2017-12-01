@@ -73,8 +73,10 @@ describe Oystercard do
       end
 
       it 'deduces a fare when tapping out' do
+        p subject
         subject.touch_in(entry_station)
-        expect { subject.touch_out(exit_station) }.to change { subject.balance }.by(-Oystercard::MINIMUM_FARE)
+        p subject
+        expect { subject.touch_out(exit_station) }.to change { subject.balance }.by(-1)
       end
 
       it 'should deduct money if you touch in without touching out' do

@@ -70,8 +70,10 @@ require './lib/oystercard'
 require './lib/journey'
 oyster = Oystercard.new
 oyster.add_money(50)
-oyster.touch_in("a")
-oyster.touch_out("b")
+s1 = Station.new("a", 1)
+oyster.touch_in(s1)
+s2 = Station.new("b", 2)
+oyster.touch_out(s2)
 # p oyster.touch_in("e")
 # p oyster.touch_in("f")
 p oyster.log
