@@ -1,11 +1,12 @@
+require_relative 'journey_log'
 class Oystercard
-  attr_reader :balance, :entry_station, :exit_station, :log, :current_journey
+  attr_reader :balance, :entry_station, :exit_station, :journey_log, :current_journey
   BALANCE_LIMIT = 90
   MINIMUM_FARE = 1
 
   def initialize
     @balance = 0
-    @log = []
+    @journey_log = JourneyLog.new
   end
 
   def add_money(amount)
@@ -18,7 +19,7 @@ class Oystercard
     if in_journey?
       deduct(Journey::PENALTY_FARE)
       @current_journey.end(nil)
-      @log << @current_journey
+      journey_log.journey_list << @current_journey
       @current_journey = nil
     else
       @current_journey = journey
@@ -42,7 +43,7 @@ class Oystercard
 
   def end_and_log_journey(exit_station)
     @current_journey.end(exit_station)
-    @log << @current_journey
+    journey_log.journey_list << @current_journey
     @current_journey = nil
   end
 

@@ -5,7 +5,7 @@ describe Oystercard do
   it { is_expected.to respond_to(:add_money).with(1).argument }
   it { is_expected.to respond_to(:touch_in).with(1).argument }
   it { is_expected.to respond_to(:touch_out).with(1).argument }
-  it { is_expected.to respond_to(:log) }
+  it { is_expected.to respond_to(:journey_log) }
 
   let(:entry_station) { double(:entry_station) }
   let(:exit_station) { double(:exit_station) }
@@ -13,7 +13,7 @@ describe Oystercard do
 
   describe '#initalize' do
     it 'should check that the card has an empty list of journey by default' do
-      expect(subject.log).to be_empty
+      expect(subject.journey_log.journey_list).to be_empty
     end
   end
 
@@ -109,7 +109,7 @@ describe Oystercard do
     end
 
     it 'should store a journey' do
-      expect { subject.touch_out(exit_station) }.to change { subject.log.size }.by(1)
+      expect { subject.touch_out(exit_station) }.to change { subject.journey_log.journey_list.size }.by(1)
     end
   end
 end
