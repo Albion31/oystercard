@@ -19,8 +19,7 @@ class Oystercard
     if in_journey?
       deduct(Journey::PENALTY_FARE)
       @current_journey.end(nil)
-      journey_log.journey_list << @current_journey
-      @current_journey = nil
+      log_journey
     else
       @current_journey = journey
       @current_journey.start(entry_station)
@@ -34,15 +33,15 @@ class Oystercard
       start_invalid_journey
       deduct(Journey::PENALTY_FARE)
     end
-    end_and_log_journey(exit_station)
+    @current_journey.end(exit_station)
+    log_journey
   end
 
   def in_journey?
     !@current_journey.nil?
   end
 
-  def end_and_log_journey(exit_station)
-    @current_journey.end(exit_station)
+  def log_journey
     journey_log.journey_list << @current_journey
     @current_journey = nil
   end
