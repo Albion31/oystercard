@@ -16,7 +16,11 @@ class Journey
   end
 
   def fare
-    !@entry_station.nil? && !@exit_station.nil? ? MINIMUM_FARE : PENALTY_FARE
+    !@entry_station.nil? && !@exit_station.nil? ? compare_zones * MINIMUM_FARE : PENALTY_FARE
+  end
+
+  def compare_zones
+    (@entry_station.zone - @exit_station.zone).abs + 1
   end
 
   def complete?

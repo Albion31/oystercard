@@ -7,9 +7,8 @@ describe Oystercard do
   it { is_expected.to respond_to(:touch_out).with(1).argument }
   it { is_expected.to respond_to(:journey_log) }
 
-  let(:entry_station) { double(:entry_station) }
-  let(:exit_station) { double(:exit_station) }
-  # let(:journey) {double(:my_journey, :start => "a", :end => "b")}
+  let(:entry_station) { double(:entry_station, zone: 1) }
+  let(:exit_station) { double(:exit_station, zone: 1) }
 
   describe '#initalize' do
     it 'should check that the card has an empty list of journey by default' do
@@ -73,9 +72,7 @@ describe Oystercard do
       end
 
       it 'deduces a fare when tapping out' do
-        p subject
         subject.touch_in(entry_station)
-        p subject
         expect { subject.touch_out(exit_station) }.to change { subject.balance }.by(-1)
       end
 

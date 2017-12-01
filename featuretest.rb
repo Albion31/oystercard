@@ -72,7 +72,7 @@ oyster = Oystercard.new
 oyster.add_money(50)
 s1 = Station.new("a", 1)
 oyster.touch_in(s1)
-s2 = Station.new("b", 2)
+s2 = Station.new("b", 6)
 oyster.touch_out(s2)
 # p oyster.touch_in("e")
 # p oyster.touch_in("f")
