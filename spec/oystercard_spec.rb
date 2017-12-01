@@ -43,11 +43,18 @@ describe Oystercard do
       expect { subject.touch_in(entry_station) }.to raise_error 'Insufficient Funds!'
     end
 
-    it "should raise error if you touch in without touching out" do
+    it 'should deduct money if you touch in without touching out' do
       subject.add_money(50)
       subject.touch_in(entry_station)
-      expect{ subject.touch_in(entry_station)}.to raise_error "You did not touch out"
+      subject.touch_in(entry_station)
+      expect(subject.balance).to eq 44
     end
+
+    # it "should raise error if you touch in without touching out" do
+    #   subject.add_money(50)
+    #   subject.touch_in(entry_station)
+    #   expect{ subject.touch_in(entry_station)}.to raise_error "You did not touch out"
+    # end
 
     # it "should record a station when touched in" do
     #   subject.add_money(50)
@@ -57,16 +64,22 @@ describe Oystercard do
     describe '#touch out' do
       before do
         subject.add_money(50)
-        subject.touch_in(entry_station)
       end
 
       it 'no longer in a journey after touching out' do
+        subject.touch_in(entry_station)
         subject.touch_out(exit_station)
         expect(subject.in_journey?).to be false
       end
 
       it 'deduces a fare when tapping out' do
+        subject.touch_in(entry_station)
         expect { subject.touch_out(exit_station) }.to change { subject.balance }.by(-Oystercard::MINIMUM_FARE)
+      end
+
+      it 'should deduct money if you touch in without touching out' do
+        subject.touch_out(exit_station)
+        expect(subject.balance).to eq 44
       end
 
       # it 'should store exit station' do
@@ -74,10 +87,10 @@ describe Oystercard do
       #   expect(subject.exit_station).to eq exit_station
       # end
 
-      it "should raise error when you touch out without touching in" do
-        subject.touch_out(exit_station)
-        expect{subject.touch_out(exit_station)}.to raise_error "You have not touched in a station first"
-      end
+      # it "should raise error when you touch out without touching in" do
+      #   subject.touch_out(exit_station)
+      #   expect{subject.touch_out(exit_station)}.to raise_error "You have not touched in a station first"
+      # end
     end
   end
 
@@ -96,7 +109,7 @@ describe Oystercard do
     end
 
     it 'should store a journey' do
-      expect{subject.touch_out(exit_station)}.to change {subject.log.size}.by(1)
+      expect { subject.touch_out(exit_station) }.to change { subject.log.size }.by(1)
     end
   end
 end

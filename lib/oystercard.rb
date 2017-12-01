@@ -14,22 +14,41 @@ class Oystercard
   end
 
   def touch_in(entry_station, journey = Journey.new)
-    raise "You did not touch out" if in_journey?
     raise 'Insufficient Funds!' if insufficient_funds?
-    @current_journey = journey
-    @current_journey.start(entry_station)
+    if in_journey?
+      deduct(Journey::PENALTY_FARE)
+      @current_journey.end(nil)
+      @log << @current_journey
+      @current_journey = nil
+    else
+      @current_journey = journey
+      @current_journey.start(entry_station)
+    end
   end
 
   def touch_out(exit_station)
-    raise "You have not touched in a station first" if !in_journey?
-    deduct(MINIMUM_FARE)
+    if in_journey?
+      deduct(MINIMUM_FARE)
+    else
+      start_invalid_journey
+      deduct(Journey::PENALTY_FARE)
+    end
+    end_and_log_journey(exit_station)
+  end
+
+  def in_journey?
+    !@current_journey.nil?
+  end
+
+  def end_and_log_journey(exit_station)
     @current_journey.end(exit_station)
     @log << @current_journey
     @current_journey = nil
   end
 
-  def in_journey?
-    !@current_journey.nil?
+  def start_invalid_journey
+    @current_journey = Journey.new
+    @current_journey.start(nil)
   end
 
   private

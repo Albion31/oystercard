@@ -1,9 +1,10 @@
-require './lib/oystercard'
+# require './lib/oystercard'
+# require './lib/journey'
 
 
 # parts 4-5
 # # new oyster card
-p oyster = Oystercard.new
+# p oyster = Oystercard.new
 # # should display a balance of 0
 # p oyster.balance
 # # add some money
@@ -39,7 +40,7 @@ p oyster = Oystercard.new
 # p 'FAIL' if oyster.touch_in
 
 # part 10
-p oyster.add_money(10)
+# p oyster.add_money(10)
 # p oyster.touch_in
 # p oyster.touch_out
 # p 'FAIL' if oyster.balance != 10-Oystercard::MINIMUM_FARE
@@ -62,5 +63,16 @@ p oyster.add_money(10)
 # p 'FAIL' if oyster.log[-1] != {entry_station: "shoreditch", exit_station: "picadilly"}
 
 # part 13
-p 'expect to fail'
-p station = Station.new
+# p 'expect to fail'
+# p station = Station.new
+
+require './lib/oystercard'
+require './lib/journey'
+oyster = Oystercard.new
+oyster.add_money(50)
+oyster.touch_in("a")
+oyster.touch_out("b")
+# p oyster.touch_in("e")
+# p oyster.touch_in("f")
+p oyster.log
+p oyster
